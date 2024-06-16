@@ -101,7 +101,7 @@ if __name__ == "__main__":
     print('1. Genetic Algorithm')
     print('2. Simulated Annealing')
     print('3. SAGA (Simulated Annealing Genetic Algorithm)')
-    print('4. Backtracking algorithm (brute force)')
+    print('4. Backtracking Algorithm (brute force)')
     print('5. Exit')
     choice = int(input('Enter choice: '))
     if choice == 1:
