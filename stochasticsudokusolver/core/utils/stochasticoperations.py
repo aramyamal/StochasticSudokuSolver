@@ -95,25 +95,19 @@ class StochasticOperations:
         """Create children from the current generation using pairs of random parents."""
         # Generate indices for random pairs of parents
         parent_indices = np.random.choice(current_generation.shape[0], size = (2, children_amount), replace=True)
+
         # Select parents based on the indices
         fathers = current_generation[parent_indices[0, :]]
-        # print(f'fathers: {fathers.shape}')
         mothers = current_generation[parent_indices[1, :]]
 
         # Create a mask for random selection of genes from father and mother, where each gene is a 3x3 block
         crossover_mask = np.random.rand(children_amount, 3, 3) < 0.5
-
         crossover_mask = np.repeat(np.repeat(crossover_mask, repeats = 3, axis = 1), repeats = 3, axis = 2)
 
         # Create children using where operation and the mask
         children = np.where(crossover_mask, fathers, mothers).astype(np.int8)
 
         return children
-    
-    # @staticmethod
-    # def create_children(current_generation: np.ndarray, children_amount: int):
-    #     """Creates children from the current generation using vectorized block-based crossover."""
-
     
     @staticmethod #TODO: Vectorize this function for better performance
     def mutate_sudoku_population(population: np.ndarray, fixed_indices: np.ndarray, mutation_rate: float) -> np.ndarray:
@@ -134,23 +128,6 @@ class StochasticOperations:
         """Mutate a population of Sudoku arrays with a given mutation rate.
             If a board from the population is selected for mutation, two random cells are swapped within a random square
         """
-        # mutated_population = population.copy()
-        # for individual_index in range(population.shape[0]):
-        #     if np.random.rand() < mutation_rate:
-        #         for _ in range(0, number_of_swaps):
-        #             square_index = np.random.randint(0, 3, 2) * 3
-        #             i, j = np.random.randint(0, 3, 2) + square_index
-        #             # Make sure that the indices are not fixed
-        #             while np.any(np.all(fixed_indices == (i, j), axis=1)):
-        #                 square_index = np.random.randint(0, 3, 2) * 3
-        #                 i, j = np.random.randint(0, 3, 2) + square_index
-        #             i_new, j_new = np.random.randint(0, 3, 2) + square_index
-        #             # Make sure that the new indices are not fixed
-        #             while np.any(np.all(fixed_indices == (i_new, j_new), axis=1)):
-        #                 i_new, j_new = np.random.randint(0, 3, 2) + square_index
-        #             mutated_population[individual_index, i, j], mutated_population[individual_index, i_new, j_new] = mutated_population[individual_index, i_new, j_new], mutated_population[individual_index, i, j]
-        # return mutated_population
-    
         mutate_mask = np.random.rand(population.shape[0]) < mutation_rate
         new_population = population.copy()
         for _ in range(np.random.randint(0, number_of_swaps)):

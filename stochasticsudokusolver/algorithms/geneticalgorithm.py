@@ -58,7 +58,7 @@ class GeneticAlgorithm(SudokuAlgorithm):
                 found_solution = True
                 solution = current_generation[fitness_indices[0]]
             
-            # Count if we are stuck in a local minima
+            # Increment local minima count
             if iteration > 2 and self.fitness_history[-1] == self.fitness_history[-2]:
                 local_minima_loop_count += 1
             else:
@@ -79,8 +79,6 @@ class GeneticAlgorithm(SudokuAlgorithm):
 
             # Create children from the current generation and add to the next generation
             children = self.so.create_children(current_generation, children_amount)
-            # # Mutate children
-            # children = self.so.mutate_sudoku_population_bounded(children, fixed_indices, self.individual_mutation_rate)
             next_generation[selection_amount:] = children
 
             # Mutate the next generation
